@@ -18,7 +18,7 @@ export default async function Page({
     if (match) {
       const repo = match[1];
       return (
-        <div className="flex flex-col items-center justify-center min-h-screen py-2">
+        <div className="flex flex-col items-center justify-center min-h-screen py-2 dark:bg-gray-900 dark:text-gray-100">
           <NpmPackage repo={repo} pkg={pkg} />
         </div>
       );
