@@ -1,32 +1,34 @@
 "use client";
-import { useCompositionInput } from "foxact/use-composition-input";
+
 import { useRouter } from "next/navigation";
-import { useCallback, useRef } from "react";
+import { useCallback, useId } from "react";
 
 export function SearchBar() {
+  const idPrefix = useId();
+  const inputId = `${idPrefix}-search`;
+
   const router = useRouter();
-  const inputRef = useRef("");
-  const inputProps = useCompositionInput(
-    useCallback((value: string) => {
-      inputRef.current = value;
-    }, []),
-  );
+
+  const search = useCallback((formData: FormData) => {
+    const searchQuery = formData.get(inputId);
+    if (searchQuery && typeof searchQuery === 'string') {
+      router.push(`/${encodeURIComponent(searchQuery)}`);
+    }
+  }, []);
+
   return (
     <>
       <div className="flex flex-col justify-center items-center w-full">
         <form
           className="flex flex-col justify-center items-center"
-          onSubmit={(e) => {
-            e.preventDefault();
-            router.push(`/${encodeURIComponent(inputRef.current)}`);
-          }}
+          action={search}
         >
           <div>
             <label className="sr-only" />
             <input
               className="w-full border border-gray-300 p-2 rounded-lg"
               placeholder="a npm package"
-              {...inputProps}
+              name={inputId}
             />
           </div>
           <button
