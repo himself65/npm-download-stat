@@ -16,6 +16,7 @@ export const EmbedFrame: React.FC<EmbedFrameProps> = ({
 }) => {
   return (
     <section
+      id="embed-frame"
       className={twMerge(
         "relative rounded border shadow-md",
         isError

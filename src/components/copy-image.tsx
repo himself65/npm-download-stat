@@ -1,6 +1,6 @@
 "use client";
 import { MouseEvent } from "react";
-import { toPng } from "html-to-image";
+import { toBlob } from "html-to-image";
 import { toast } from "sonner";
 
 function updateStyle() {
@@ -32,14 +32,14 @@ function updateStyle() {
 
 const copyImage = (event: MouseEvent<HTMLButtonElement>) => {
   event.preventDefault();
-  const div = document.querySelector("section");
+  const div = document.querySelector("#embed-frame") as HTMLElement | null;
   if (!div) return;
 
   const reset = updateStyle();
 
   toast.promise(
-    toPng(div).then(async (dataUrl) => {
-      const blob = await fetch(dataUrl).then((r) => r.blob());
+    toBlob(div).then(async (blob) => {
+      if (!blob) throw new Error("Failed to convert html to blob");
       const item = new ClipboardItem({ "image/png": blob });
       await navigator.clipboard.write([item]);
       reset();
