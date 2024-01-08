@@ -81,6 +81,11 @@ export async function fetchRepository(
       revalidate: 3600, // 1h
     },
   });
+
+  if (!res.ok) {
+    throw new Error(`GitHub API returned "${(await res.json()).message}"`);
+  }
+
   const {
     data: { repository },
   } = repositoryQuerySchema.parse(await res.json());
