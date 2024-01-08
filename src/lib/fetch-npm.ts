@@ -78,7 +78,7 @@ async function getVersions(pkg: string): Promise<Record<string, number>> {
 }
 
 export async function getPkgInfo(pkg: string) {
-  const url = `https://registry.npmjs.org/${encodeURIComponent(pkg)}`;
+  const url = `https://registry.npmjs.org/${encodeURIComponent(pkg)}/latest`;
   const data = await get(url);
   return data as {
     name: string;
@@ -99,7 +99,6 @@ export async function fetchNpmPackage(
     allTime,
     { downloads: last30Days, date: lastDate },
     versions,
-    info,
   ] = await Promise.all([
     // getStatPoint(pkg, 'last-week'),
     // getStatPoint(pkg, 'last-month'),
@@ -107,7 +106,6 @@ export async function fetchNpmPackage(
     getAllTime(pkg),
     getLastNDays(pkg, 30),
     getVersions(pkg),
-    getPkgInfo(pkg),
   ]);
   return {
     packageName: pkg,
