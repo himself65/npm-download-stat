@@ -35,6 +35,11 @@ export const Footer = memo(function Footer() {
       <span className="text-gray-500/80">•</span>
       <span>licensed under</span>
       <span className="font-bold">MIT</span>
+      <span className="text-gray-500/80">•</span>
+      <span>
+        available search params: <code>?count=number</code>,{" "}
+        <code>?sort=semver</code>
+      </span>
     </footer>
   );
 });
