@@ -1,36 +1,29 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# npm-stat (by versions)
 
-## Getting Started
+> Get npm download stats by versions
 
-First, run the development server:
+## Introduction
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+npm package maintainers have the need to know which versions of their npm packages are being used.
+
+## Usage
+
+We use [next.js](https://nextjs.org/) to build this project.
+
+```shell
+pnpm install
+pnpm run dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### Environment Variables
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+- `GITHUB_TOKEN`: GitHub personal access token. It's **required** to get the repository information from GitHub API.
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+## Related Projects
 
-## Learn More
+- [npm-stat.com](https://github.com/pvorb/npm-stat.com): npm-stat.com has basic download stats for npm packages. But it doesn't have download stats by versions.
+- [francoisbest.com](https://francoisbest.com): This website has download stats by versions with amazing visuals. But it's only using SSG to generate the static blog pages.
 
-To learn more about Next.js, take a look at the following resources:
+## LICENSE
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+[MIT](LICENSE)

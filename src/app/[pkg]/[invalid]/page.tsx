@@ -7,7 +7,6 @@ type Props = {
   };
 };
 
-export const dynamic = "force-static";
 export const runtime = "edge";
 
 export default function Page(props: Props) {

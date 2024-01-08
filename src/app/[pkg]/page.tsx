@@ -1,7 +1,7 @@
 import { getPkgInfo } from "@/lib/fetch-npm";
 import { NpmPackage } from "@/components/npm-package";
 import { CopyImage } from "@/components/copy-image";
-import { textAccentMap } from "@/lib/utils";
+import { matchGithubRepo, textAccentMap } from "@/lib/utils";
 import type { Metadata } from "next";
 import { fetchRepository } from "@/lib/fetch-github";
 import type { Icon } from "next/dist/lib/metadata/types/metadata-types";
@@ -16,18 +16,16 @@ type Props = {
   };
 };
 
-export const dynamic = "force-static";
 export const runtime = "edge";
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const pkg = decodeURIComponent(params.pkg);
   try {
     const info = await getPkgInfo(pkg as string);
-    const regex = /git\+https:\/\/github\.com\/(.*)\.git/;
-    const match = info.repository.url.match(regex);
+    const slug = matchGithubRepo(info);
     const icons: Icon[] = [];
-    if (match) {
-      const { avatarUrl } = await fetchRepository(match![1]);
+    if (slug) {
+      const { avatarUrl } = await fetchRepository(slug);
       icons.push({
         url: avatarUrl,
         sizes: "96x96",
@@ -56,34 +54,29 @@ export default async function Page({ params, searchParams }: Props) {
   }
   try {
     const info = await getPkgInfo(pkg as string);
-    if (info.repository?.url) {
-      const regex = /git\+https:\/\/github\.com\/(.*)\.git/;
-      const match = info.repository.url.match(regex);
-      const matchedAccent = Object.keys(textAccentMap).find(
-        (key) =>
-          pkg.includes(key) ??
-          info.name.includes(key) ??
-          info.description.includes(key),
-      );
-      const accent = matchedAccent
-        ? textAccentMap[matchedAccent as keyof typeof textAccentMap]
-        : "text-blue-500";
-      if (match) {
-        const repo = match[1];
-        return (
-          <div className="flex flex-col items-center justify-center min-h-screen py-2 dark:bg-gray-900 dark:text-gray-100">
-            <NpmPackage
-              repo={repo}
-              pkg={pkg}
-              accent={accent}
-              versionRollout={versionRollout}
-            />
-            <CopyImage />
-            <Footer />
-          </div>
-        );
-      }
-    }
+    const slug = matchGithubRepo(info);
+    const matchedAccent = Object.keys(textAccentMap).find(
+      (key) =>
+        pkg.includes(key) ??
+        info.name.includes(key) ??
+        info.description.includes(key),
+    );
+    const accent = matchedAccent
+      ? textAccentMap[matchedAccent as keyof typeof textAccentMap]
+      : "text-blue-500";
+    return (
+      <div className="flex flex-col items-center justify-center min-h-screen py-2 dark:bg-gray-900 dark:text-gray-100">
+        <NpmPackage
+          repo={slug}
+          pkg={pkg}
+          accent={accent}
+          version={info.version}
+          versionRollout={versionRollout}
+        />
+        <CopyImage />
+        <Footer />
+      </div>
+    );
   } catch (e) {
     console.error(e);
   }
