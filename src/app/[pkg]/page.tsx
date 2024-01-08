@@ -76,6 +76,7 @@ export default async function Page({ params, searchParams }: Props) {
               repo={repo}
               pkg={pkg}
               accent={accent}
+              version={info.version}
               versionRollout={versionRollout}
             />
             <CopyImage />
