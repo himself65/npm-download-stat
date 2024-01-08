@@ -1,7 +1,6 @@
 "use client";
 import { toPng } from "html-to-image";
 export function CopyImage() {
-  const id = "npm-package";
   const copyImage = async () => {
     const div = document.querySelector("section");
     if (!div) return;
