@@ -19,6 +19,7 @@ import { GithubAvatar } from "@/components/npm-package/github-avatar";
 export type NpmPackageProps = Omit<EmbedFrameProps, "Icon" | "children"> & {
   pkg: string;
   repo: string;
+  version: string;
   accent?: string;
   versionRollout?: number;
   children?: React.ReactNode;
@@ -27,6 +28,7 @@ export type NpmPackageProps = Omit<EmbedFrameProps, "Icon" | "children"> & {
 export const NpmPackage: React.FC<NpmPackageProps> = async ({
   pkg,
   repo,
+  version,
   accent = "text-blue-500",
   className,
   children,
@@ -69,13 +71,13 @@ export const NpmPackage: React.FC<NpmPackageProps> = async ({
                   <FiDownload />
                   <dd>{formatStatNumber(npm.allTime)}</dd>
                 </dl>
-                {github.version && (
+                {version && (
                   <dl
                     className="flex items-center gap-1"
                     title="Latest version"
                   >
                     <FiTag />
-                    <span>{github.version}</span>
+                    <span>{version}</span>
                   </dl>
                 )}
                 {github.license && (
@@ -113,7 +115,7 @@ export const NpmPackage: React.FC<NpmPackageProps> = async ({
               versions={npm.versions}
               accent={accent}
               limit={versionRollout}
-              latestVersion={github.version}
+              latestVersion={version}
             />
           )}
           <SvgCurveGraph
