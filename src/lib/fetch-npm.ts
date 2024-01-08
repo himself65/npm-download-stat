@@ -5,9 +5,6 @@ export type NpmPackageStatsData = {
   packageName: string;
   url: string;
   repository?: string;
-  // lastWeek: number
-  // lastMonth: number
-  // lastYear: number
   allTime: number;
   last30Days: number[];
   versions: Record<string, number>;
@@ -92,27 +89,15 @@ export async function getPkgInfo(pkg: string) {
 export async function fetchNpmPackage(
   pkg: string,
 ): Promise<NpmPackageStatsData> {
-  const [
-    // lastWeek,
-    // lastMonth,
-    // lastYear,
-    allTime,
-    { downloads: last30Days, date: lastDate },
-    versions,
-  ] = await Promise.all([
-    // getStatPoint(pkg, 'last-week'),
-    // getStatPoint(pkg, 'last-month'),
-    // getStatPoint(pkg, 'last-year'),
-    getAllTime(pkg),
-    getLastNDays(pkg, 30),
-    getVersions(pkg),
-  ]);
+  const [allTime, { downloads: last30Days, date: lastDate }, versions] =
+    await Promise.all([
+      getAllTime(pkg),
+      getLastNDays(pkg, 30),
+      getVersions(pkg),
+    ]);
   return {
     packageName: pkg,
     url: `https://npmjs.com/package/${pkg}`,
-    // lastWeek,
-    // lastMonth,
-    // lastYear,
     versions,
     allTime,
     lastDate: new Date(lastDate),
