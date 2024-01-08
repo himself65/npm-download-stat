@@ -16,18 +16,17 @@ export function formatStatNumber(
   });
 }
 
-
 // we cannot automatically detect the accent color for every package.
 export const textAccentMap = {
-  vue: 'text-green-500',
-  react: 'text-blue-500',
-  angular: 'text-red-500',
-  svelte: 'text-orange-500',
-  ember: 'text-red-500',
-  backbone: 'text-blue-500',
-  jquery: 'text-blue-500',
-  preact: 'text-blue-500',
-  rspack: 'text-[#d97706]',
-  vite: 'text-[#add467]',
-  vitest: 'text-[#add467]'
-}
+  vue: "text-green-500",
+  react: "text-blue-500",
+  angular: "text-red-500",
+  svelte: "text-orange-500",
+  ember: "text-red-500",
+  backbone: "text-blue-500",
+  jquery: "text-blue-500",
+  preact: "text-blue-500",
+  rspack: "text-[#d97706]",
+  vite: "text-[#add467]",
+  vitest: "text-[#add467]",
+};
