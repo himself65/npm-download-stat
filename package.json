@@ -7,8 +7,9 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint",
-    "format": "prettier --write ."
+    "lint": "next lint --max-warnings=0",
+    "format": "prettier --write .",
+    "ci": "next lint --max-warnings=0 && prettier --check ."
   },
   "dependencies": {
     "dayjs": "^1.11.10",
