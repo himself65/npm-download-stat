@@ -3,38 +3,37 @@ import { MouseEvent } from "react";
 import { toPng } from "html-to-image";
 import { toast } from "sonner";
 
+function updateStyle() {
+  const versionRollout = document.querySelector(
+    "#version-rollout",
+  ) as HTMLElement | null;
+  const figure = document.querySelector("figure");
+  if (
+    !versionRollout ||
+    !figure ||
+    versionRollout.scrollHeight <= versionRollout.clientHeight
+  )
+    return () => {};
+
+  // update style to render full height image
+  const lastOverflow = versionRollout.style.overflow;
+  const lastMaxHeight = versionRollout.style.maxHeight;
+  const lastFigureMaxHeight = figure.style.maxHeight;
+
+  versionRollout.style.overflow = "visible";
+  versionRollout.style.maxHeight = "none";
+  figure.style.maxHeight = "none";
+  return () => {
+    versionRollout.style.overflow = lastOverflow;
+    versionRollout.style.maxHeight = lastMaxHeight;
+    figure.style.maxHeight = lastFigureMaxHeight;
+  };
+}
+
 const copyImage = (event: MouseEvent<HTMLButtonElement>) => {
   event.preventDefault();
   const div = document.querySelector("section");
   if (!div) return;
-
-  const versionRollout = div.querySelector(
-    "#version-rollout",
-  ) as HTMLElement | null;
-  const figure = div.querySelector("figure") as HTMLElement | null;
-
-  function updateStyle() {
-    if (
-      !versionRollout ||
-      !figure ||
-      versionRollout.scrollHeight <= versionRollout.clientHeight
-    )
-      return () => {};
-
-    // update style to render full height image
-    const lastOverflow = versionRollout.style.overflow;
-    const lastMaxHeight = versionRollout.style.maxHeight;
-    const lastFigureMaxHeight = figure.style.maxHeight;
-
-    versionRollout.style.overflow = "visible";
-    versionRollout.style.maxHeight = "none";
-    figure.style.maxHeight = "none";
-    return () => {
-      versionRollout.style.overflow = lastOverflow;
-      versionRollout.style.maxHeight = lastMaxHeight;
-      figure.style.maxHeight = lastFigureMaxHeight;
-    };
-  }
 
   const reset = updateStyle();
 
@@ -48,7 +47,7 @@ const copyImage = (event: MouseEvent<HTMLButtonElement>) => {
     {
       loading: "Rendering image...",
       success: "Image copied to clipboard",
-      error: "Failed to render image",
+      error: (err) => err.message,
     },
   );
 };
