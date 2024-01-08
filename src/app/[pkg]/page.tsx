@@ -1,26 +1,28 @@
 import { getPkgInfo } from '@/lib/fetch-npm'
 import { NpmPackage } from '@/components/npm-package'
-import React from 'react'
 import { Logo } from '@/components/logo'
 import { CopyImage } from '@/components/copy-image'
+import { textAccentMap } from '@/lib/utils'
+import type { Metadata } from 'next'
 
-// we cannot automatically detect the accent color for every package.
-const textAccentMap = {
-  vue: 'text-green-500',
-  react: 'text-blue-500',
-  angular: 'text-red-500',
-  svelte: 'text-orange-500',
-  ember: 'text-red-500',
-  backbone: 'text-blue-500',
-  jquery: 'text-blue-500',
-  preact: 'text-blue-500',
-  rspack: 'text-[#d97706]',
-  vite: 'text-[#add467]',
-  vitest: 'text-[#add467]'
+type Props = {
+  params: {
+    pkg: string
+  }
 }
-
 export const dynamic = 'force-static'
 export const runtime = 'edge'
+
+export async function generateMetadata (
+  { params }: Props
+): Promise<Metadata> {
+  const pkg = decodeURIComponent(params.pkg)
+  const info = await getPkgInfo(pkg as string)
+  return {
+    title: `${pkg} - ${info.description}`,
+    description: info.description
+  }
+}
 
 export default async function Page ({ params }: { params: { pkg: string } }) {
   const pkg = decodeURIComponent(params.pkg)
