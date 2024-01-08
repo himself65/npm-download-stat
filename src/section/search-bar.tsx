@@ -14,7 +14,7 @@ export function SearchBar() {
     if (searchQuery && typeof searchQuery === "string") {
       router.push(`/${encodeURIComponent(searchQuery)}`);
     }
-  }, []);
+  }, [inputId, router]);
 
   return (
     <>
