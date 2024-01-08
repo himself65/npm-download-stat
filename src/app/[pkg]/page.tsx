@@ -16,6 +16,9 @@ type Props = {
   };
 };
 
+export const dynamic = "force-static";
+export const runtime = "edge";
+
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const pkg = decodeURIComponent(params.pkg);
   try {
