@@ -9,6 +9,7 @@ import {
   FiStar,
   FiTag,
 } from "react-icons/fi";
+import { compareBuild } from "semver";
 
 import { twMerge } from "tailwind-merge";
 import { SvgCurveGraph } from "../svg-curve-graph";
@@ -21,6 +22,7 @@ export type NpmPackageProps = Omit<EmbedFrameProps, "Icon" | "children"> & {
   repo: string;
   accent?: string;
   versionRollout?: number;
+  versionRolloutSort?: "count" | "semver";
   children?: React.ReactNode;
 };
 
@@ -31,6 +33,7 @@ export const NpmPackage: React.FC<NpmPackageProps> = async ({
   className,
   children,
   versionRollout = 5,
+  versionRolloutSort = "count",
   ...props
 }) => {
   try {
@@ -114,6 +117,7 @@ export const NpmPackage: React.FC<NpmPackageProps> = async ({
               accent={accent}
               limit={versionRollout}
               latestVersion={github.version}
+              sort={versionRolloutSort}
             />
           )}
           <SvgCurveGraph
@@ -144,7 +148,19 @@ type VersionRolloutProps = {
   versions: Record<string, number>;
   accent: string;
   limit: number;
+  sort: "count" | "semver";
   latestVersion?: string;
+};
+
+const sortFunctions: Record<
+  VersionRolloutProps["sort"],
+  (
+    a: [version: string, count: number],
+    b: [version: string, count: number],
+  ) => number
+> = {
+  count: ([, a], [, b]) => b - a,
+  semver: ([a], [b]) => compareBuild(a, b),
 };
 
 const VersionRollout: React.FC<VersionRolloutProps> = ({
@@ -152,8 +168,12 @@ const VersionRollout: React.FC<VersionRolloutProps> = ({
   accent,
   latestVersion,
   limit,
+  sort,
 }) => {
-  const data = Object.entries(versions).slice(0, limit);
+  const data = Object.entries(versions)
+    .slice()
+    .sort(sortFunctions[sort] ?? sortFunctions["count"])
+    .slice(0, limit);
   const totalCount = Object.values(versions).reduce(
     (sum, count) => sum + count,
     0,

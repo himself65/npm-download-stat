@@ -13,6 +13,7 @@ type Props = {
   };
   searchParams: {
     count?: string;
+    sort?: string;
   };
 };
 
@@ -54,6 +55,11 @@ export default async function Page({ params, searchParams }: Props) {
   if (Number.isNaN(versionRollout) || versionRollout < 5) {
     versionRollout = 5;
   }
+  let versionRolloutSort: "count" | "semver" =
+    (searchParams.sort as "count" | "semver") ?? "count";
+  if (!["count", "semver"].includes(versionRolloutSort)) {
+    versionRolloutSort = "count";
+  }
   try {
     const info = await getPkgInfo(pkg as string);
     if (info.repository?.url) {
@@ -77,6 +83,7 @@ export default async function Page({ params, searchParams }: Props) {
               pkg={pkg}
               accent={accent}
               versionRollout={versionRollout}
+              versionRolloutSort={versionRolloutSort}
             />
             <CopyImage />
             <Footer />
