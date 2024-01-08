@@ -83,7 +83,7 @@ export async function getPkgInfo(pkg: string) {
   return data as {
     name: string;
     description: string;
-    repository?: {
+    repository: {
       url: string;
     };
   };

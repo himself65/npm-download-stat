@@ -4,6 +4,8 @@ import { Logo } from '@/components/logo'
 import { CopyImage } from '@/components/copy-image'
 import { textAccentMap } from '@/lib/utils'
 import type { Metadata } from 'next'
+import { fetchRepository } from '@/lib/fetch-github'
+import type { Icon } from 'next/dist/lib/metadata/types/metadata-types'
 
 type Props = {
   params: {
@@ -16,9 +18,22 @@ export async function generateMetadata (
 ): Promise<Metadata> {
   const pkg = decodeURIComponent(params.pkg)
   const info = await getPkgInfo(pkg as string)
+  const regex = /git\+https:\/\/github\.com\/(.*)\.git/
+  const match = info.repository.url.match(regex)
+  const icons: Icon[] = []
+  if (match) {
+    const { avatarUrl } = await fetchRepository(match![1])
+    icons.push({
+      url: avatarUrl,
+      sizes: '96x96',
+      type: 'image/png'
+    })
+  }
+
   return {
     title: `${pkg} - ${info.description}`,
-    description: info.description
+    description: info.description,
+    icons
   }
 }
 
@@ -30,7 +45,9 @@ export default async function Page ({ params }: { params: { pkg: string } }) {
       const regex = /git\+https:\/\/github\.com\/(.*)\.git/
       const match = info.repository.url.match(regex)
       const matchedAccent = Object.keys(textAccentMap).find((key) =>
-        info.name.includes(key) ?? pkg.includes(key) ?? info.description.includes(key)
+        pkg.includes(key) ??
+        info.name.includes(key) ??
+        info.description.includes(key)
       )
       const accent = matchedAccent
         ? textAccentMap[matchedAccent as keyof typeof textAccentMap]
@@ -61,16 +78,15 @@ export default async function Page ({ params }: { params: { pkg: string } }) {
           </div>
         )
       }
-    } else {
-      throw new Error('No repository found')
     }
   } catch (e) {
-    return (
-      <div
-        className="flex flex-col items-center justify-center min-h-screen py-2 dark:bg-gray-900 dark:text-gray-100">
-        <h1 className="text-3xl font-bold">404</h1>
-        <p className="text-gray-500">Package not found</p>
-      </div>
-    )
+    console.error(e)
   }
+  return (
+    <div
+      className="flex flex-col items-center justify-center min-h-screen py-2 dark:bg-gray-900 dark:text-gray-100">
+      <h1 className="text-3xl font-bold">404</h1>
+      <p className="text-gray-500">Package not found</p>
+    </div>
+  )
 }
