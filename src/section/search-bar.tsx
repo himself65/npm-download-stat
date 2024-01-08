@@ -6,16 +6,23 @@ export function SearchBar() {
   const router = useRouter();
   const [pkg, setPkg] = useState("");
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen py-2 dark:bg-gray-900">
+    <>
       <div className="flex flex-col justify-center items-center w-full">
         <div className="flex flex-row justify-center items-center">
-          <input
-            className="w-1/2 border border-gray-300 p-2 rounded-lg"
-            defaultValue="react"
-            placeholder="a npm package"
-            value={pkg}
-            onChange={(e) => setPkg(e.target.value)}
-          />
+          <form
+            onSubmit={(e) => {
+              e.preventDefault();
+              router.push(`/${encodeURIComponent(pkg)}`);
+            }}
+          >
+            <input
+              className="w-full border border-gray-300 p-2 rounded-lg"
+              defaultValue="react"
+              placeholder="a npm package"
+              value={pkg}
+              onChange={(e) => setPkg(e.target.value)}
+            />
+          </form>
         </div>
       </div>
       <button
@@ -26,6 +33,6 @@ export function SearchBar() {
       >
         Search
       </button>
-    </div>
+    </>
   );
 }

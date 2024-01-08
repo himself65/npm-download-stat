@@ -4,7 +4,7 @@ export const Footer = memo(function Footer() {
   return (
     <footer
       role="presentation"
-      className="absolute bottom-3 left-3 flex h-6 items-center gap-1 text-sm text-gray-500"
+      className="absolute bottom-3 left-3 flex items-center gap-1 text-sm text-gray-500 overflow-auto flex-wrap"
     >
       <span>idea inspired by </span>
       <a
