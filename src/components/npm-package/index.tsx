@@ -127,18 +127,6 @@ export const NpmPackage: React.FC<NpmPackageProps> = async ({
             height={120}
             lastDate={npm.lastDate}
           />
-          <footer
-            role="presentation"
-            className="absolute bottom-3 left-3 flex h-6 items-center gap-2 text-sm"
-          >
-            <Logo size={6} background={false} />
-            <span className="text-md font-semibold">47ng</span>
-            <span className="text-gray-500/80">•</span>
-            <a href="https://francoisbest.com/open-source" className={accent}>
-              francoisbest.com
-              <span className="text-gray-500/80">/open-source</span>
-            </a>
-          </footer>
         </figure>
       </EmbedFrame>
     );
