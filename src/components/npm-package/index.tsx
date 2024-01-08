@@ -12,7 +12,6 @@ import {
 
 import { twMerge } from "tailwind-merge";
 import { SvgCurveGraph } from "../svg-curve-graph";
-import { Logo } from "../logo";
 import { formatStatNumber } from "@/lib/utils";
 import { EmbedFrame, EmbedFrameProps } from "../embed-frame";
 import { GithubAvatar } from "@/components/npm-package/github-avatar";
