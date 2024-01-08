@@ -6,7 +6,7 @@ const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: "Npm Download Stat",
-  description: "Npm Download Stat",
+  description: "Npm Download Stat by version",
 };
 
 export default function RootLayout({
