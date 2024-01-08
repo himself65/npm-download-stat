@@ -17,23 +17,30 @@ export async function generateMetadata (
   { params }: Props
 ): Promise<Metadata> {
   const pkg = decodeURIComponent(params.pkg)
-  const info = await getPkgInfo(pkg as string)
-  const regex = /git\+https:\/\/github\.com\/(.*)\.git/
-  const match = info.repository.url.match(regex)
-  const icons: Icon[] = []
-  if (match) {
-    const { avatarUrl } = await fetchRepository(match![1])
-    icons.push({
-      url: avatarUrl,
-      sizes: '96x96',
-      type: 'image/png'
-    })
-  }
+  try {
+    const info = await getPkgInfo(pkg as string)
+    const regex = /git\+https:\/\/github\.com\/(.*)\.git/
+    const match = info.repository.url.match(regex)
+    const icons: Icon[] = []
+    if (match) {
+      const { avatarUrl } = await fetchRepository(match![1])
+      icons.push({
+        url: avatarUrl,
+        sizes: '96x96',
+        type: 'image/png'
+      })
+    }
 
-  return {
-    title: `${pkg} - ${info.description}`,
-    description: info.description,
-    icons
+    return {
+      title: `${pkg} - ${info.description}`,
+      description: info.description,
+      icons
+    }
+  } catch (e) {
+    console.error(e)
+    return {
+      title: '404 - Package not found'
+    }
   }
 }
 
