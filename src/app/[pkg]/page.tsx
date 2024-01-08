@@ -32,7 +32,7 @@ export default async function Page ({ params }: { params: { pkg: string } }) {
       const regex = /git\+https:\/\/github\.com\/(.*)\.git/
       const match = info.repository.url.match(regex)
       const matchedAccent = Object.keys(textAccentMap).find((key) =>
-        pkg.includes(key)
+        info.name.includes(key) ?? pkg.includes(key) ?? info.description.includes(key)
       )
       const accent = matchedAccent
         ? textAccentMap[matchedAccent as keyof typeof textAccentMap]
