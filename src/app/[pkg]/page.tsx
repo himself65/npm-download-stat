@@ -54,6 +54,7 @@ export default async function Page ({ params }: { params: { pkg: string } }) {
         : 'text-blue-500'
       if (match) {
         const repo = match[1]
+        console.log('rendering: %s with accent \'%s\'', repo, accent)
         return (
           <div
             className="flex flex-col items-center justify-center min-h-screen py-2 dark:bg-gray-900 dark:text-gray-100">
