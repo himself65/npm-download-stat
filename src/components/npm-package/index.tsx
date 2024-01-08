@@ -45,7 +45,7 @@ export const NpmPackage: React.FC<NpmPackageProps> = async ({
           <br />
           GitHub updated at: {github.updatedAt.toISOString()}
         </data>
-        <figure className="not-prose my-2 max-w-[433px]">
+        <figure className="not-prose my-2 max-w-[433px] max-h-[600px] overflow-scroll">
           <div className="px-4">
             <header
               className="mb-2 flex flex-wrap justify-between gap-2"

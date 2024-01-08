@@ -11,6 +11,9 @@ type Props = {
   params: {
     pkg: string;
   };
+  searchParams: {
+    count?: string;
+  };
 };
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
@@ -42,8 +45,12 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   }
 }
 
-export default async function Page({ params }: { params: { pkg: string } }) {
+export default async function Page({ params, searchParams }: Props) {
   const pkg = decodeURIComponent(params.pkg);
+  let versionRollout = Number(searchParams.count ?? 5);
+  if (Number.isNaN(versionRollout) || versionRollout < 5) {
+    versionRollout = 5;
+  }
   try {
     const info = await getPkgInfo(pkg as string);
     if (info.repository?.url) {
@@ -60,10 +67,14 @@ export default async function Page({ params }: { params: { pkg: string } }) {
         : "text-blue-500";
       if (match) {
         const repo = match[1];
-        console.log("rendering: %s with accent '%s'", repo, accent);
         return (
           <div className="flex flex-col items-center justify-center min-h-screen py-2 dark:bg-gray-900 dark:text-gray-100">
-            <NpmPackage repo={repo} pkg={pkg} accent={accent} />
+            <NpmPackage
+              repo={repo}
+              pkg={pkg}
+              accent={accent}
+              versionRollout={versionRollout}
+            />
             <CopyImage />
             <Footer />
           </div>
