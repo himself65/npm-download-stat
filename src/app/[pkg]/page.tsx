@@ -15,7 +15,7 @@ const textAccentMap = {
 }
 
 export default async function Page ({ params }: { params: { pkg: string } }) {
-  const { pkg } = params
+  const pkg = decodeURIComponent(params.pkg)
   const info = await getPkgInfo(pkg as string)
   if (info.repository?.url) {
     const regex = /git\+https:\/\/github\.com\/(.*)\.git/

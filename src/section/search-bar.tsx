@@ -21,7 +21,7 @@ export function SearchBar() {
       <button
         className="bg-gray-800 text-white p-2 rounded-lg mt-2"
         onClick={() => {
-          router.push(`/${pkg}`);
+          router.push(`/${encodeURIComponent(pkg)}`);
         }}
       >
         Search
