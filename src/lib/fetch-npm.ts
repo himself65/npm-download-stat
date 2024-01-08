@@ -76,14 +76,13 @@ async function getVersions(pkg: string): Promise<Record<string, number>> {
 
 export async function getPkgInfo(pkg: string) {
   const url = `https://registry.npmjs.org/${encodeURIComponent(pkg)}/latest`;
-  const data = await get(url);
-  return data as {
+  return get<{
     name: string;
     description: string;
     repository: {
       url: string;
-    };
-  };
+    }
+  }>(url);
 }
 
 export async function fetchNpmPackage(
