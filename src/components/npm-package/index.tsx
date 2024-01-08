@@ -28,7 +28,7 @@ export const NpmPackage: React.FC<NpmPackageProps> = async ({
   pkg,
   repo,
   accent = "text-blue-500",
-  className = "my-8",
+  className,
   children,
   versionRollout = 5,
   ...props
@@ -39,17 +39,13 @@ export const NpmPackage: React.FC<NpmPackageProps> = async ({
       fetchRepository(repo),
     ]);
     return (
-      <EmbedFrame
-        Icon={FiPackage}
-        className={twMerge("relative px-0", className)}
-        {...props}
-      >
+      <EmbedFrame className={twMerge("relative", className)} {...props}>
         <data aria-hidden className="hidden">
           NPM updated at: {npm.updatedAt.toISOString()}
           <br />
           GitHub updated at: {github.updatedAt.toISOString()}
         </data>
-        <figure className="not-prose !my-0">
+        <figure className="not-prose my-2">
           <div className="px-4">
             <header
               className="mb-2 flex flex-wrap justify-between gap-2"
@@ -132,7 +128,7 @@ export const NpmPackage: React.FC<NpmPackageProps> = async ({
   } catch (error) {
     console.error(error);
     return (
-      <EmbedFrame Icon={FiPackage} className={className} isError {...props}>
+      <EmbedFrame className={className} isError {...props}>
         <div className="not-prose">
           <p className="font-medium">Error displaying package {pkg}</p>
           <code className="text-sm text-red-500">{String(error)}</code>
