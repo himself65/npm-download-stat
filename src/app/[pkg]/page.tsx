@@ -19,6 +19,9 @@ const textAccentMap = {
   vitest: 'text-[#add467]'
 }
 
+export const dynamic = 'force-static'
+export const runtime = 'edge'
+
 export default async function Page ({ params }: { params: { pkg: string } }) {
   const pkg = decodeURIComponent(params.pkg)
   try {
