@@ -3,6 +3,7 @@ import { NpmPackage } from '@/components/npm-package'
 import React from 'react'
 import { Logo } from '@/components/logo'
 
+// we cannot automatically detect the accent color for every package.
 const textAccentMap = {
   'vue': 'text-green-500',
   'react': 'text-blue-500',
@@ -12,6 +13,9 @@ const textAccentMap = {
   'backbone': 'text-blue-500',
   'jquery': 'text-blue-500',
   'preact': 'text-blue-500',
+  'rspack': 'text-[#d97706]',
+  'vite': 'text-[#add467]',
+  'vitest': 'text-[#add467]',
 }
 
 export default async function Page ({ params }: { params: { pkg: string } }) {
