@@ -11,7 +11,7 @@ export function SearchBar() {
 
   const search = useCallback((formData: FormData) => {
     const searchQuery = formData.get(inputId);
-    if (searchQuery && typeof searchQuery === 'string') {
+    if (searchQuery && typeof searchQuery === "string") {
       router.push(`/${encodeURIComponent(searchQuery)}`);
     }
   }, []);
