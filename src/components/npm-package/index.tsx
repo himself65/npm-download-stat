@@ -162,7 +162,10 @@ const VersionRollout: React.FC<VersionRolloutProps> = ({
   );
   return (
     <>
-      <div className="px-4 pb-2 text-xs">
+      <div
+        className="px-4 mb-2 text-xs max-h-72 overflow-auto"
+        id="version-rollout"
+      >
         <p className="mb-1 flex text-gray-500">
           Version rollout
           <span className="ml-auto">Last week</span>

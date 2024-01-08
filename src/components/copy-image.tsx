@@ -7,12 +7,50 @@ const copyImage = (event: MouseEvent<HTMLButtonElement>) => {
   event.preventDefault();
   const div = document.querySelector("section");
   if (!div) return;
-  toPng(div).then(async (dataUrl) => {
-    const blob = await fetch(dataUrl).then((r) => r.blob());
-    const item = new ClipboardItem({ "image/png": blob });
-    await navigator.clipboard.write([item]);
-  });
-  toast.success("Image copied to clipboard");
+
+  const versionRollout = div.querySelector(
+    "#version-rollout",
+  ) as HTMLElement | null;
+  const figure = div.querySelector("figure") as HTMLElement | null;
+
+  function updateStyle() {
+    if (
+      !versionRollout ||
+      !figure ||
+      versionRollout.scrollHeight <= versionRollout.clientHeight
+    )
+      return () => {};
+
+    // update style to render full height image
+    const lastOverflow = versionRollout.style.overflow;
+    const lastMaxHeight = versionRollout.style.maxHeight;
+    const lastFigureMaxHeight = figure.style.maxHeight;
+
+    versionRollout.style.overflow = "visible";
+    versionRollout.style.maxHeight = "none";
+    figure.style.maxHeight = "none";
+    return () => {
+      versionRollout.style.overflow = lastOverflow;
+      versionRollout.style.maxHeight = lastMaxHeight;
+      figure.style.maxHeight = lastFigureMaxHeight;
+    };
+  }
+
+  const reset = updateStyle();
+
+  toast.promise(
+    toPng(div).then(async (dataUrl) => {
+      const blob = await fetch(dataUrl).then((r) => r.blob());
+      const item = new ClipboardItem({ "image/png": blob });
+      await navigator.clipboard.write([item]);
+      reset();
+    }),
+    {
+      loading: "Rendering image...",
+      success: "Image copied to clipboard",
+      error: "Failed to render image",
+    },
+  );
 };
 
 export function CopyImage() {
