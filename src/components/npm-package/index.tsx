@@ -45,7 +45,7 @@ export const NpmPackage: React.FC<NpmPackageProps> = async ({
           <br />
           GitHub updated at: {github.updatedAt.toISOString()}
         </data>
-        <figure className="not-prose my-2 w-[433px]">
+        <figure className="not-prose my-2 max-w-[433px]">
           <div className="px-4">
             <header
               className="mb-2 flex flex-wrap justify-between gap-2"
@@ -191,7 +191,7 @@ const VersionRollout: React.FC<VersionRolloutProps> = ({
                 {formatStatNumber(count)}
               </span>{" "}
               <span className="text-gray-500">
-                ({((100 * count) / totalCount).toFixed(0).padStart(2, "0")}%)
+                ({((100 * count) / totalCount).toFixed(0)}%)
               </span>
             </div>
           </div>
