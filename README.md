@@ -15,6 +15,10 @@ pnpm install
 pnpm run dev
 ```
 
+### Environment Variables
+
+- `GITHUB_TOKEN`: GitHub personal access token. It's **required** to get the repository information from GitHub API.
+
 ## Related Projects
 
 - [npm-stat.com](https://github.com/pvorb/npm-stat.com): npm-stat.com has basic download stats for npm packages. But it doesn't have download stats by versions.
