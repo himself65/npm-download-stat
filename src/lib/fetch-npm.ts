@@ -78,10 +78,12 @@ export async function getPkgInfo(pkg: string) {
   const url = `https://registry.npmjs.org/${encodeURIComponent(pkg)}/latest`;
   return get<{
     name: string;
+    homepage?: string;
     description: string;
-    repository: {
+    version: string;
+    repository?: {
       url: string;
-    }
+    };
   }>(url);
 }
 

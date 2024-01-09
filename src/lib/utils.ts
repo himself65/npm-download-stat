@@ -1,3 +1,5 @@
+import { getPkgInfo } from "@/lib/fetch-npm";
+
 const LOCALE = "en-US";
 const numberFormat = Intl.NumberFormat(LOCALE);
 
@@ -14,6 +16,30 @@ export function formatStatNumber(
     unitDisplay: "short",
     ...options,
   });
+}
+
+export function matchGithubRepo(
+  info: Awaited<ReturnType<typeof getPkgInfo>>,
+): string {
+  const maybeLink = info.repository?.url || info.homepage;
+  if (!maybeLink) {
+    throw new Error(`Cannot find repository or homepage for ${info.name}`);
+  }
+  {
+    const regex = /git\+https:\/\/github\.com\/(.*)\.git/;
+    const match = maybeLink.match(regex);
+    if (match) {
+      return match[1];
+    }
+  }
+  {
+    const regex = /https:\/\/github\.com\/(.*)/;
+    const match = maybeLink.match(regex);
+    if (match) {
+      return match[1];
+    }
+  }
+  throw new Error(`Cannot find github repo for ${info.name}`);
 }
 
 // we cannot automatically detect the accent color for every package.

@@ -9,12 +9,15 @@ export function SearchBar() {
 
   const router = useRouter();
 
-  const search = useCallback((formData: FormData) => {
-    const searchQuery = formData.get(inputId);
-    if (searchQuery && typeof searchQuery === 'string') {
-      router.push(`/${encodeURIComponent(searchQuery)}`);
-    }
-  }, []);
+  const search = useCallback(
+    (formData: FormData) => {
+      const searchQuery = formData.get(inputId);
+      if (searchQuery && typeof searchQuery === "string") {
+        router.push(`/${encodeURIComponent(searchQuery)}`);
+      }
+    },
+    [inputId, router],
+  );
 
   return (
     <>

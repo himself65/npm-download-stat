@@ -20,6 +20,7 @@ import { GithubAvatar } from "@/components/npm-package/github-avatar";
 export type NpmPackageProps = Omit<EmbedFrameProps, "Icon" | "children"> & {
   pkg: string;
   repo: string;
+  version: string;
   accent?: string;
   versionRollout?: number;
   versionRolloutSort?: "count" | "semver";
@@ -29,6 +30,7 @@ export type NpmPackageProps = Omit<EmbedFrameProps, "Icon" | "children"> & {
 export const NpmPackage: React.FC<NpmPackageProps> = async ({
   pkg,
   repo,
+  version,
   accent = "text-blue-500",
   className,
   children,
@@ -48,7 +50,7 @@ export const NpmPackage: React.FC<NpmPackageProps> = async ({
           <br />
           GitHub updated at: {github.updatedAt.toISOString()}
         </data>
-        <figure className="not-prose my-2 max-w-[433px] max-h-[600px] overflow-scroll">
+        <figure className="not-prose my-2 max-w-[433px] max-h-[600px]">
           <div className="px-4">
             <header
               className="mb-2 flex flex-wrap justify-between gap-2"
@@ -72,13 +74,13 @@ export const NpmPackage: React.FC<NpmPackageProps> = async ({
                   <FiDownload />
                   <dd>{formatStatNumber(npm.allTime)}</dd>
                 </dl>
-                {github.version && (
+                {version && (
                   <dl
                     className="flex items-center gap-1"
                     title="Latest version"
                   >
                     <FiTag />
-                    <span>{github.version}</span>
+                    <span>{version}</span>
                   </dl>
                 )}
                 {github.license && (
@@ -116,7 +118,7 @@ export const NpmPackage: React.FC<NpmPackageProps> = async ({
               versions={npm.versions}
               accent={accent}
               limit={versionRollout}
-              latestVersion={github.version}
+              latestVersion={version}
               sort={versionRolloutSort}
             />
           )}
@@ -180,7 +182,10 @@ const VersionRollout: React.FC<VersionRolloutProps> = ({
   );
   return (
     <>
-      <div className="px-4 pb-2 text-xs">
+      <div
+        className="px-4 mb-2 text-xs max-h-72 overflow-auto"
+        id="version-rollout"
+      >
         <p className="mb-1 flex text-gray-500">
           Version rollout
           <span className="ml-auto">Last week</span>
