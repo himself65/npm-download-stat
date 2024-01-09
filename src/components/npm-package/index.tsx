@@ -162,7 +162,7 @@ const sortFunctions: Record<
   ) => number
 > = {
   count: ([, a], [, b]) => b - a,
-  semver: ([a], [b]) => compareBuild(a, b),
+  semver: ([a], [b]) => compareBuild(b, a),
 };
 
 const VersionRollout: React.FC<VersionRolloutProps> = ({
