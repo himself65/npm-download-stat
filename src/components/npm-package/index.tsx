@@ -1,6 +1,6 @@
 "use server";
 import { fetchRepository } from "@/lib/fetch-github";
-import { fetchNpmPackage } from "@/lib/fetch-npm";
+import { fetchNpmPackage, type NpmPackageStatsData } from "@/lib/fetch-npm";
 import React from "react";
 import {
   FiDownload,
@@ -96,20 +96,22 @@ export const NpmPackage: React.FC<NpmPackageProps> = async ({
             <pre className="my-4 rounded border bg-gray-50/50 !p-2 text-sm dark:border-gray-800 dark:bg-gray-950 dark:shadow-inner">
               <details className="text-gray-500">
                 <summary>
-                  <span className="select-none text-red-500/75">$ </span>pnpm
-                  add{" "}
-                  <a href={npm.url} className={accent}>
-                    {npm.packageName}
-                  </a>
+                  <PackageManager
+                    npm={npm}
+                    accent={accent}
+                    packageManager="pnpm"
+                  />
                 </summary>
-                <div>
-                  <span className="ml-1 select-none text-red-500/75"> $ </span>
-                  yarn add {npm.packageName}
-                </div>
-                <div>
-                  <span className="ml-1 select-none text-red-500/75"> $ </span>
-                  npm install {npm.packageName}
-                </div>
+                {(["yarn", "npm"] as const).map((pm) => (
+                  <div key={pm}>
+                    <PackageManager
+                      className="ml-3"
+                      npm={npm}
+                      accent={accent}
+                      packageManager={pm}
+                    />
+                  </div>
+                ))}
               </details>
             </pre>
           </div>
@@ -145,6 +147,30 @@ export const NpmPackage: React.FC<NpmPackageProps> = async ({
 };
 
 // --
+
+type PackageManagerProps = {
+  npm: Pick<NpmPackageStatsData, "url" | "packageName">;
+  className?: string;
+  accent: string;
+  packageManager: "npm" | "yarn" | "pnpm";
+};
+
+const PackageManager: React.FC<PackageManagerProps> = ({
+  className,
+  npm,
+  accent,
+  packageManager,
+}) => (
+  <>
+    <span className={twMerge(className, "select-none text-red-500/75")}>
+      ${" "}
+    </span>
+    {packageManager} {packageManager === "npm" ? "install" : "add"}{" "}
+    <a href={npm.url} className={accent}>
+      {npm.packageName}
+    </a>
+  </>
+);
 
 type VersionRolloutProps = {
   versions: Record<string, number>;
