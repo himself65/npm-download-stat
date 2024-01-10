@@ -5,7 +5,7 @@ import { toast } from "sonner";
 
 function updateStyle() {
   const versionRollout = document.querySelector(
-    "#version-rollout"
+    "#version-rollout",
   ) as HTMLElement | null;
   const figure = document.querySelector("figure");
   if (
@@ -51,7 +51,7 @@ const copyImage = (event: MouseEvent<HTMLButtonElement>) => {
         loading: "Rendering image...",
         success: "Image copied to clipboard",
         error: (err) => err.message,
-      }
+      },
     );
   } else {
     let xpath = "//details//div";
@@ -60,7 +60,7 @@ const copyImage = (event: MouseEvent<HTMLButtonElement>) => {
       document,
       null,
       XPathResult.ORDERED_NODE_SNAPSHOT_TYPE,
-      null
+      null,
     );
 
     //removing yarn and npm entries as in the downloaded image they overlap with other content
@@ -86,7 +86,7 @@ const copyImage = (event: MouseEvent<HTMLButtonElement>) => {
         success:
           "Image downloaded, copying to clipboard is not supported in your browser",
         error: (err) => err.message,
-      }
+      },
     );
   }
 };
