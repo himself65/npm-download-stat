@@ -2,7 +2,7 @@
 
 import { useRouter } from "next/navigation";
 import { useCallback, useId } from "react";
-import SearchButton from "./search-button"; 
+import SearchButton from "./search-button";
 
 export function SearchBar() {
   const idPrefix = useId();
