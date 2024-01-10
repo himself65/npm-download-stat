@@ -102,14 +102,17 @@ export const NpmPackage: React.FC<NpmPackageProps> = async ({
                     {npm.packageName}
                   </a>
                 </summary>
-                <div>
-                  <span className="ml-1 select-none text-red-500/75"> $ </span>
-                  yarn add {npm.packageName}
-                </div>
-                <div>
-                  <span className="ml-1 select-none text-red-500/75"> $ </span>
-                  npm install {npm.packageName}
-                </div>
+                {["yarn add", "npm install"].map((command) => (
+                  <div key={command}>
+                    <span className="ml-1 select-none text-red-500/75">
+                      {" $ "}
+                    </span>
+                    {command}{" "}
+                    <a href={npm.url} className={accent}>
+                      {npm.packageName}
+                    </a>
+                  </div>
+                ))}
               </details>
             </pre>
           </div>
