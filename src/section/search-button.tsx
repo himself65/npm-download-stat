@@ -6,7 +6,7 @@ export default function SearchButton() {
 
   return (
     <button
-      className="flex items-center gap-2 bg-gray-800 text-white p-2 rounded-lg mt-2"
+      className="flex items-center gap-1 bg-gray-800 text-white p-2 rounded-lg mt-2 disabled:bg-gray-700 disabled:cursor-not-allowed"
       type="submit"
       disabled={pending}
     >
