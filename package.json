@@ -2,7 +2,7 @@
   "name": "npm-download-stat",
   "version": "0.1.0",
   "private": true,
-  "packageManager": "pnpm@8.14.0",
+  "packageManager": "pnpm@8.14.1",
   "scripts": {
     "dev": "next dev",
     "build": "next build",
@@ -17,7 +17,7 @@
     "next": "14.0.4",
     "react": "^18",
     "react-dom": "^18",
-    "react-icons": "^4.12.0",
+    "react-icons": "^5.0.1",
     "sonner": "^1.3.1",
     "tailwind-merge": "^2.2.0",
     "zod": "^3.22.4",
@@ -28,12 +28,12 @@
     "@types/react": "^18",
     "@types/react-dom": "^18",
     "@types/semver": "^7.5.6",
-    "autoprefixer": "^10.0.1",
+    "autoprefixer": "^10.4.16",
     "eslint": "^8",
     "eslint-config-next": "14.0.4",
     "postcss": "^8",
-    "prettier": "^3.1.1",
-    "tailwindcss": "^3.3.0",
-    "typescript": "^5"
+    "prettier": "^3.2.0",
+    "tailwindcss": "^3.4.1",
+    "typescript": "^5.3.3"
   }
 }
