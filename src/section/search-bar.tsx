@@ -2,6 +2,7 @@
 
 import { useRouter } from "next/navigation";
 import { useCallback, useId } from "react";
+import SearchButton from "./search-button";
 
 export function SearchBar() {
   const idPrefix = useId();
@@ -34,12 +35,7 @@ export function SearchBar() {
               name={inputId}
             />
           </div>
-          <button
-            className="bg-gray-800 text-white p-2 rounded-lg mt-2"
-            type="submit"
-          >
-            Search
-          </button>
+          <SearchButton />
         </form>
       </div>
     </>

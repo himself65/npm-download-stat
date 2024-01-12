@@ -37,19 +37,58 @@ const copyImage = (event: MouseEvent<HTMLButtonElement>) => {
 
   const reset = updateStyle();
 
-  toast.promise(
-    toBlob(div).then(async (blob) => {
-      if (!blob) throw new Error("Failed to convert html to blob");
-      const item = new ClipboardItem({ "image/png": blob });
-      await navigator.clipboard.write([item]);
-      reset();
-    }),
-    {
-      loading: "Rendering image...",
-      success: "Image copied to clipboard",
-      error: (err) => err.message,
-    },
-  );
+  //Firefox does not support copying images to clipboard
+  if (typeof ClipboardItem !== "undefined") {
+    toast.promise(
+      toBlob(div).then(async (blob) => {
+        if (!blob) throw new Error("Failed to convert html to blob");
+        const item = new ClipboardItem({ "image/png": blob });
+        await navigator.clipboard.write([item]);
+
+        reset();
+      }),
+      {
+        loading: "Rendering image...",
+        success: "Image copied to clipboard",
+        error: (err) => err.message,
+      },
+    );
+  } else {
+    let xpath = "//details//div";
+    let matchingElements = document.evaluate(
+      xpath,
+      document,
+      null,
+      XPathResult.ORDERED_NODE_SNAPSHOT_TYPE,
+      null,
+    );
+
+    //removing yarn and npm entries as in the downloaded image they overlap with other content
+    for (let i = 0; i < matchingElements.snapshotLength; i++) {
+      let element = matchingElements.snapshotItem(i);
+      if (element && element.parentNode) {
+        element.parentNode.removeChild(element);
+      }
+    }
+    toast.promise(
+      toBlob(div).then(async (blob) => {
+        if (!blob) throw new Error("Failed to convert html to blob");
+        let tempElem = document.createElement("a");
+        tempElem.href = URL.createObjectURL(blob);
+        tempElem.download = "image.png";
+        document.body.appendChild(tempElem);
+        tempElem.click();
+        document.body.removeChild(tempElem);
+        reset();
+      }),
+      {
+        loading: "Rendering image...",
+        success:
+          "Image downloaded, copying to clipboard is not supported in your browser",
+        error: (err) => err.message,
+      },
+    );
+  }
 };
 
 export function CopyImage() {
