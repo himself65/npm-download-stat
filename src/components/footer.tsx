@@ -12,7 +12,7 @@ export const Footer = memo(function Footer() {
         className="text-blue-500 hover:underline"
         target="_blank"
       >
-        47ng
+        François Best
       </a>
       <span className="text-gray-500/80">•</span>
       <span>built by </span>
