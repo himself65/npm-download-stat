@@ -3,6 +3,7 @@ import dayjs from "dayjs";
 
 export type NpmPackageStatsData = {
   packageName: string;
+  license: string;
   url: string;
   repository?: string;
   allTime: number;
@@ -85,6 +86,7 @@ export async function getPkgInfo(pkg: string) {
     homepage?: string;
     description: string;
     version: string;
+    license: string;
     repository?: {
       url: string;
     };
@@ -94,14 +96,20 @@ export async function getPkgInfo(pkg: string) {
 export async function fetchNpmPackage(
   pkg: string,
 ): Promise<NpmPackageStatsData> {
-  const [allTime, { downloads: last30Days, date: lastDate }, versions] =
-    await Promise.all([
-      getAllTime(pkg),
-      getLastNDays(pkg, 30),
-      getVersions(pkg),
-    ]);
+  const [
+    { license },
+    allTime,
+    { downloads: last30Days, date: lastDate },
+    versions,
+  ] = await Promise.all([
+    getPkgInfo(pkg),
+    getAllTime(pkg),
+    getLastNDays(pkg, 30),
+    getVersions(pkg),
+  ]);
   return {
     packageName: pkg,
+    license,
     url: `https://npmjs.com/package/${pkg}`,
     versions,
     allTime,

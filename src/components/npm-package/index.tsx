@@ -83,10 +83,20 @@ export const NpmPackage: React.FC<NpmPackageProps> = async ({
                     <span>{version}</span>
                   </dl>
                 )}
-                {github.license && (
+                {github.license ? (
                   <dl className="flex items-center gap-1" title="License">
                     <FiFileText />
-                    <dd>{github.license.split(" ")[0]}</dd>
+                    <dd>
+                      {github.license.split(" ")[0].toUpperCase() ===
+                      "NOASSERTION"
+                        ? npm.license
+                        : github.license.split(" ")[0]}
+                    </dd>
+                  </dl>
+                ) : (
+                  <dl className="flex items-center gap-1" title="License">
+                    <FiFileText />
+                    <dd>{npm.license}</dd>
                   </dl>
                 )}
               </div>
