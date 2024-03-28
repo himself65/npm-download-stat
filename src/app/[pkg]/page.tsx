@@ -1,11 +1,11 @@
 import { getPkgInfo } from "@/lib/fetch-npm";
-import { NpmPackage } from "@/components/npm-package";
 import { CopyImage } from "@/components/copy-image";
 import { matchGithubRepo, textAccentMap } from "@/lib/utils";
 import type { Metadata } from "next";
 import { fetchRepository } from "@/lib/fetch-github";
 import type { Icon } from "next/dist/lib/metadata/types/metadata-types";
 import { Footer } from "@/components/footer";
+import { NpmPackage } from "@/components/npm-package";
 
 type Props = {
   params: {
@@ -58,39 +58,29 @@ export default async function Page({ params, searchParams }: Props) {
   if (!["count", "semver"].includes(versionRolloutSort)) {
     versionRolloutSort = "count";
   }
-  try {
-    const info = await getPkgInfo(pkg as string);
-    const slug = matchGithubRepo(info);
-    const matchedAccent = Object.keys(textAccentMap).find(
-      (key) =>
-        pkg.includes(key) ??
-        info.name.includes(key) ??
-        info.description.includes(key),
-    );
-    const accent = matchedAccent
-      ? textAccentMap[matchedAccent as keyof typeof textAccentMap]
-      : "text-blue-500";
-    return (
-      <div className="flex flex-col items-center justify-center min-h-screen py-2 dark:bg-gray-900 dark:text-gray-100">
-        <NpmPackage
-          repo={slug}
-          pkg={pkg}
-          accent={accent}
-          version={info.version}
-          versionRollout={versionRollout}
-          versionRolloutSort={versionRolloutSort}
-        />
-        <CopyImage />
-        <Footer />
-      </div>
-    );
-  } catch (e) {
-    console.error(e);
-  }
+  const info = await getPkgInfo(pkg as string);
+  const slug = matchGithubRepo(info);
+  const matchedAccent = Object.keys(textAccentMap).find(
+    (key) =>
+      pkg.includes(key) ??
+      info.name.includes(key) ??
+      info.description.includes(key),
+  );
+  const accent = matchedAccent
+    ? textAccentMap[matchedAccent as keyof typeof textAccentMap]
+    : "text-blue-500";
   return (
     <div className="flex flex-col items-center justify-center min-h-screen py-2 dark:bg-gray-900 dark:text-gray-100">
-      <h1 className="text-3xl font-bold">404</h1>
-      <p className="text-gray-500">Package not found</p>
+      <NpmPackage
+        repo={slug}
+        pkg={pkg}
+        accent={accent}
+        version={info.version}
+        versionRollout={versionRollout}
+        versionRolloutSort={versionRolloutSort}
+      />
+      <CopyImage />
+      <Footer />
     </div>
   );
 }

@@ -1,12 +1,12 @@
 "use server";
 import dayjs from "dayjs";
-import React from "react";
+import { useId, ComponentProps } from "react";
 import { twJoin, twMerge } from "tailwind-merge";
 import { formatNumber } from "@/lib/utils";
 
 // Source:
 // https://medium.com/@francoisromain/smooth-a-svg-path-with-cubic-bezier-curves-e37b49d46c74
-export type SvgCurveGraphProps = React.ComponentProps<"svg"> & {
+export type SvgCurveGraphProps = ComponentProps<"svg"> & {
   data: number[];
   width?: number;
   height?: number;
@@ -114,7 +114,7 @@ export const SvgCurveGraph: React.FC<SvgCurveGraphProps> = ({
   className,
   ...props
 }) => {
-  const gradientId = React.useId();
+  const gradientId = useId();
   const graphPoints = formatGraphData(data, { w, h, mt, mb });
   if (graphPoints.length === 0) {
     return null;

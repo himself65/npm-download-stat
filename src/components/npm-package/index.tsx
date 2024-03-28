@@ -16,10 +16,9 @@ export type NpmPackageProps = Omit<EmbedFrameProps, "Icon" | "children"> & {
   pkg: string;
   repo: string;
   version: string;
-  accent?: string;
+  accent: string;
   versionRollout?: number;
   versionRolloutSort?: "count" | "semver";
-  children?: React.ReactNode;
 };
 
 export const NpmPackage: React.FC<NpmPackageProps> = async ({
@@ -28,109 +27,91 @@ export const NpmPackage: React.FC<NpmPackageProps> = async ({
   version,
   accent = "text-blue-500",
   className,
-  children,
   versionRollout = 5,
   versionRolloutSort = "count",
-  ...props
 }) => {
-  try {
-    const [npm, github] = await Promise.all([
-      fetchNpmPackage(pkg),
-      fetchRepository(repo),
-    ]);
-    return (
-      <EmbedFrame className={twMerge("relative", className)} {...props}>
-        <data aria-hidden className="hidden">
-          NPM updated at: {npm.updatedAt.toISOString()}
-          <br />
-          GitHub updated at: {github.updatedAt.toISOString()}
-        </data>
-        <figure className="not-prose my-2 max-w-[433px] max-h-[600px]">
-          <div className="px-4">
-            <header
-              className="mb-2 flex flex-wrap justify-between gap-2"
-              style={{ alignItems: "last baseline" }}
-            >
-              <a href={github.url}>
-                <h3 className="mt-0 flex items-center text-xl font-semibold text-gray-900 dark:text-gray-100">
-                  <GithubAvatar github={github} repo={repo} />
-                  {repo}
-                </h3>
-              </a>
-              <div className="flex gap-6 text-sm text-gray-500">
-                <dl className="flex items-center gap-1" title="Stars">
-                  <FiStar />
-                  <dd>{formatStatNumber(github.stars)}</dd>
+  const [npm, github] = await Promise.all([
+    fetchNpmPackage(pkg),
+    fetchRepository(repo),
+  ]);
+  return (
+    <EmbedFrame className={twMerge("relative", className)}>
+      <data aria-hidden className="hidden">
+        NPM updated at: {npm.updatedAt.toISOString()}
+        <br />
+        GitHub updated at: {github.updatedAt.toISOString()}
+      </data>
+      <figure className="not-prose my-2 max-w-[433px] max-h-[600px]">
+        <div className="px-4">
+          <header
+            className="mb-2 flex flex-wrap justify-between gap-2"
+            style={{ alignItems: "last baseline" }}
+          >
+            <a href={github.url}>
+              <h3 className="mt-0 flex items-center text-xl font-semibold text-gray-900 dark:text-gray-100">
+                <GithubAvatar github={github} repo={repo} />
+                {repo}
+              </h3>
+            </a>
+            <div className="flex gap-6 text-sm text-gray-500">
+              <dl className="flex items-center gap-1" title="Stars">
+                <FiStar />
+                <dd>{formatStatNumber(github.stars)}</dd>
+              </dl>
+              <dl
+                className="flex items-center gap-1"
+                title="NPM downloads (all time)"
+              >
+                <FiDownload />
+                <dd>{formatStatNumber(npm.allTime)}</dd>
+              </dl>
+              {version && (
+                <dl className="flex items-center gap-1" title="Latest version">
+                  <FiTag />
+                  <span>{version}</span>
                 </dl>
-                <dl
-                  className="flex items-center gap-1"
-                  title="NPM downloads (all time)"
-                >
-                  <FiDownload />
-                  <dd>{formatStatNumber(npm.allTime)}</dd>
+              )}
+              {github.license ? (
+                <dl className="flex items-center gap-1" title="License">
+                  <FiFileText />
+                  <dd>
+                    {github.license.split(" ")[0].toUpperCase() ===
+                    "NOASSERTION"
+                      ? npm.license
+                      : github.license.split(" ")[0]}
+                  </dd>
                 </dl>
-                {version && (
-                  <dl
-                    className="flex items-center gap-1"
-                    title="Latest version"
-                  >
-                    <FiTag />
-                    <span>{version}</span>
-                  </dl>
-                )}
-                {github.license ? (
-                  <dl className="flex items-center gap-1" title="License">
-                    <FiFileText />
-                    <dd>
-                      {github.license.split(" ")[0].toUpperCase() ===
-                      "NOASSERTION"
-                        ? npm.license
-                        : github.license.split(" ")[0]}
-                    </dd>
-                  </dl>
-                ) : (
-                  <dl className="flex items-center gap-1" title="License">
-                    <FiFileText />
-                    <dd>{npm.license}</dd>
-                  </dl>
-                )}
-              </div>
-            </header>
-            <p className="my-4">{github.description}</p>
-            {children}
-            <pre className="my-4 rounded border bg-gray-50/50 !p-2 text-sm dark:border-gray-800 dark:bg-gray-950 dark:shadow-inner">
-              <InstallCommand npm={npm} accent={accent} />
-            </pre>
-          </div>
-          {versionRollout && (
-            <VersionRollout
-              versions={npm.versions}
-              accent={accent}
-              limit={versionRollout}
-              latestVersion={version}
-              sort={versionRolloutSort}
-            />
-          )}
-          <SvgCurveGraph
-            data={npm.last30Days ?? []}
-            className={accent}
-            height={120}
-            lastDate={npm.lastDate}
-          />
-        </figure>
-      </EmbedFrame>
-    );
-  } catch (error) {
-    console.error(error);
-    return (
-      <EmbedFrame className={className} isError {...props}>
-        <div className="not-prose">
-          <p className="font-medium">Error displaying package {pkg}</p>
-          <code className="text-sm text-red-500">{String(error)}</code>
+              ) : (
+                <dl className="flex items-center gap-1" title="License">
+                  <FiFileText />
+                  <dd>{npm.license}</dd>
+                </dl>
+              )}
+            </div>
+          </header>
+          <p className="my-4">{github.description}</p>
+          <pre className="my-4 rounded border bg-gray-50/50 !p-2 text-sm dark:border-gray-800 dark:bg-gray-950 dark:shadow-inner">
+            <InstallCommand npm={npm} accent={accent} />
+          </pre>
         </div>
-      </EmbedFrame>
-    );
-  }
+        {versionRollout && (
+          <VersionRollout
+            versions={npm.versions}
+            accent={accent}
+            limit={versionRollout}
+            latestVersion={version}
+            sort={versionRolloutSort}
+          />
+        )}
+        <SvgCurveGraph
+          data={npm.last30Days ?? []}
+          className={accent}
+          height={120}
+          lastDate={npm.lastDate}
+        />
+      </figure>
+    </EmbedFrame>
+  );
 };
 
 // --

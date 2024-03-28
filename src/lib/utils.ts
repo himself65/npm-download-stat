@@ -1,4 +1,6 @@
 import { getPkgInfo } from "@/lib/fetch-npm";
+import { type ClassValue, clsx } from "clsx";
+import { twMerge } from "tailwind-merge";
 
 const LOCALE = "en-US";
 const numberFormat = Intl.NumberFormat(LOCALE);
@@ -56,3 +58,7 @@ export const textAccentMap = {
   vite: "text-[#add467]",
   vitest: "text-[#add467]",
 };
+
+export function cn(...inputs: ClassValue[]) {
+  return twMerge(clsx(inputs));
+}
