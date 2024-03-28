@@ -1,14 +1,8 @@
 "use server";
 import { fetchRepository } from "@/lib/fetch-github";
-import { fetchNpmPackage, type NpmPackageStatsData } from "@/lib/fetch-npm";
+import { fetchNpmPackage } from "@/lib/fetch-npm";
 import React from "react";
-import {
-  FiDownload,
-  FiFileText,
-  FiPackage,
-  FiStar,
-  FiTag,
-} from "react-icons/fi";
+import { FiDownload, FiFileText, FiStar, FiTag } from "react-icons/fi";
 import { compareBuild } from "semver";
 
 import { twMerge } from "tailwind-merge";
@@ -16,6 +10,7 @@ import { SvgCurveGraph } from "../svg-curve-graph";
 import { formatStatNumber } from "@/lib/utils";
 import { EmbedFrame, EmbedFrameProps } from "../embed-frame";
 import { GithubAvatar } from "@/components/npm-package/github-avatar";
+import { InstallCommand } from "@/components/npm-package/install-command";
 
 export type NpmPackageProps = Omit<EmbedFrameProps, "Icon" | "children"> & {
   pkg: string;
@@ -104,25 +99,7 @@ export const NpmPackage: React.FC<NpmPackageProps> = async ({
             <p className="my-4">{github.description}</p>
             {children}
             <pre className="my-4 rounded border bg-gray-50/50 !p-2 text-sm dark:border-gray-800 dark:bg-gray-950 dark:shadow-inner">
-              <details className="text-gray-500">
-                <summary>
-                  <PackageManager
-                    npm={npm}
-                    accent={accent}
-                    packageManager="pnpm"
-                  />
-                </summary>
-                {(["yarn", "npm"] as const).map((pm) => (
-                  <div key={pm}>
-                    <PackageManager
-                      className="ml-3"
-                      npm={npm}
-                      accent={accent}
-                      packageManager={pm}
-                    />
-                  </div>
-                ))}
-              </details>
+              <InstallCommand npm={npm} accent={accent} />
             </pre>
           </div>
           {versionRollout && (
@@ -157,30 +134,6 @@ export const NpmPackage: React.FC<NpmPackageProps> = async ({
 };
 
 // --
-
-type PackageManagerProps = {
-  npm: Pick<NpmPackageStatsData, "url" | "packageName">;
-  className?: string;
-  accent: string;
-  packageManager: "npm" | "yarn" | "pnpm";
-};
-
-const PackageManager: React.FC<PackageManagerProps> = ({
-  className,
-  npm,
-  accent,
-  packageManager,
-}) => (
-  <>
-    <span className={twMerge(className, "select-none text-red-500/75")}>
-      ${" "}
-    </span>
-    {packageManager} {packageManager === "npm" ? "install" : "add"}{" "}
-    <a href={npm.url} className={accent}>
-      {npm.packageName}
-    </a>
-  </>
-);
 
 type VersionRolloutProps = {
   versions: Record<string, number>;
