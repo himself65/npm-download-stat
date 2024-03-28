@@ -2,7 +2,7 @@
   "name": "npm-download-stat",
   "version": "0.1.0",
   "private": true,
-  "packageManager": "pnpm@8.14.1",
+  "packageManager": "pnpm@8.15.5",
   "scripts": {
     "dev": "next dev",
     "build": "next build",
@@ -14,26 +14,26 @@
   "dependencies": {
     "dayjs": "^1.11.10",
     "html-to-image": "^1.11.11",
-    "next": "14.0.4",
-    "react": "^18",
-    "react-dom": "^18",
+    "next": "14.1.4",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
     "react-icons": "^5.0.1",
-    "sonner": "^1.3.1",
-    "tailwind-merge": "^2.2.0",
+    "sonner": "^1.4.41",
+    "tailwind-merge": "^2.2.2",
     "zod": "^3.22.4",
-    "semver": "^7.5.4"
+    "semver": "^7.6.0"
   },
   "devDependencies": {
-    "@types/node": "^20",
-    "@types/react": "^18",
-    "@types/react-dom": "^18",
-    "@types/semver": "^7.5.6",
-    "autoprefixer": "^10.4.16",
-    "eslint": "^8",
-    "eslint-config-next": "14.0.4",
-    "postcss": "^8",
-    "prettier": "^3.2.0",
-    "tailwindcss": "^3.4.1",
-    "typescript": "^5.3.3"
+    "@types/node": "^20.11.30",
+    "@types/react": "^18.2.73",
+    "@types/react-dom": "^18.2.22",
+    "@types/semver": "^7.5.8",
+    "autoprefixer": "^10.4.19",
+    "eslint": "^8.57.0",
+    "eslint-config-next": "^14.1.4",
+    "postcss": "^8.4.38",
+    "prettier": "^3.2.5",
+    "tailwindcss": "^3.4.3",
+    "typescript": "^5.4.3"
   }
 }
