@@ -53,7 +53,11 @@ async function getAllTime(pkg: string): Promise<number> {
     const url = `https://api.npmjs.org/downloads/range/${start.format(
       "YYYY-MM-DD",
     )}:${end.format("YYYY-MM-DD")}/${pkg}`;
-    const res = await get<RangeResponse>(url);
+    const res = await get<RangeResponse>(
+      url,
+      // if recent 18 months, cache for 1 hour
+      !start.isAfter(now.subtract(18, "month")),
+    );
     downloads += res.downloads.reduce((sum, d) => sum + d.downloads, 0);
     start = end;
     end = start.add(18, "month");
@@ -107,10 +111,10 @@ export async function fetchNpmPackage(
   };
 }
 
-async function get<T = any>(url: string) {
+async function get<T = any>(url: string, longCache = true) {
   const res = await fetch(url, {
     next: {
-      revalidate: 86_400,
+      revalidate: longCache ? 86_400 : 3_600,
       tags: ["npm"],
     },
   });
