@@ -120,9 +120,11 @@ export async function fetchNpmPackage(
 }
 
 async function get<T = any>(url: string, longCache = true) {
+  // no cache for some special packages who like to see the latest data
+  const disableCache = url.includes("adamlui");
   const res = await fetch(url, {
     next: {
-      revalidate: longCache ? 86_400 : 3_600,
+      revalidate: longCache ? 86_400 : disableCache ? 0 : 3_600,
       tags: ["npm"],
     },
   });
