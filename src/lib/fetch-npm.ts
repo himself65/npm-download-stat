@@ -91,15 +91,12 @@ export async function getPkgInfo(pkg: string) {
 export async function fetchNpmPackage(
   pkg: string,
 ): Promise<NpmPackageStatsData> {
-  const [
-    { license },
-    { downloads: last30Days, date: lastDate },
-    versions,
-  ] = await Promise.all([
-    getPkgInfo(pkg),
-    getLastNDays(pkg, 30),
-    getVersions(pkg),
-  ]);
+  const [{ license }, { downloads: last30Days, date: lastDate }, versions] =
+    await Promise.all([
+      getPkgInfo(pkg),
+      getLastNDays(pkg, 30),
+      getVersions(pkg),
+    ]);
   return {
     packageName: pkg,
     license,
