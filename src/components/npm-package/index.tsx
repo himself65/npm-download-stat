@@ -2,7 +2,7 @@
 import { fetchRepository } from "@/lib/fetch-github";
 import { fetchNpmPackage } from "@/lib/fetch-npm";
 import React from "react";
-import { FiDownload, FiFileText, FiStar, FiTag } from "react-icons/fi";
+import { FiFileText, FiStar, FiTag } from "react-icons/fi";
 import { compareBuild } from "semver";
 
 import { twMerge } from "tailwind-merge";
@@ -45,7 +45,7 @@ export const NpmPackage: React.FC<NpmPackageProps> = async ({
           <br />
           GitHub updated at: {github.updatedAt.toISOString()}
         </data>
-        <figure className="not-prose my-2 max-w-[433px] max-h-[600px]">
+        <figure className="not-prose my-4 max-w-[433px] max-h-[600px]">
           <div className="px-4">
             <header
               className="mb-2 flex flex-wrap justify-between gap-2"
@@ -61,13 +61,6 @@ export const NpmPackage: React.FC<NpmPackageProps> = async ({
                 <dl className="flex items-center gap-1" title="Stars">
                   <FiStar />
                   <dd>{formatStatNumber(github.stars)}</dd>
-                </dl>
-                <dl
-                  className="flex items-center gap-1"
-                  title="NPM downloads (all time)"
-                >
-                  <FiDownload />
-                  <dd>{formatStatNumber(npm.allTime)}</dd>
                 </dl>
                 {version && (
                   <dl

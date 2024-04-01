@@ -6,7 +6,6 @@ export type NpmPackageStatsData = {
   license: string;
   url: string;
   repository?: string;
-  allTime: number;
   last30Days: number[];
   versions: Record<string, number>;
   lastDate: Date;
@@ -94,12 +93,10 @@ export async function fetchNpmPackage(
 ): Promise<NpmPackageStatsData> {
   const [
     { license },
-    allTime,
     { downloads: last30Days, date: lastDate },
     versions,
   ] = await Promise.all([
     getPkgInfo(pkg),
-    getAllTime(pkg),
     getLastNDays(pkg, 30),
     getVersions(pkg),
   ]);
@@ -108,7 +105,6 @@ export async function fetchNpmPackage(
     license,
     url: `https://npmjs.com/package/${pkg}`,
     versions,
-    allTime,
     lastDate: new Date(lastDate),
     last30Days,
     updatedAt: new Date(),
